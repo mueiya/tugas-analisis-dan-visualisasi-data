@@ -4,15 +4,19 @@ import pandas as pd
 import plotly.express as px
 
 # Load Data
-@st.cache_data
-def load_data(path):
-    df = pd.read_csv(path)
-    df['year'] = pd.to_datetime(df['date']).dt.year
-    return df
+import os
+from kaggle.api.kaggle_api_extended import KaggleApi
+import pandas as pd
 
-DATA_PATH = "/home/mueiya/.cache/kagglehub/datasets/emirhanakku/disaster-and-emergency-response-dataset-20182024/versions/1/global_disaster_response_2018_2024.csv"
-df = load_data(DATA_PATH)
+api = KaggleApi()
+api.authenticate()
 
+dataset = "emirhanakku/disaster-and-emergency-response-dataset-20182024"
+api.dataset_download_file(dataset, "global_disaster_response_2018_2024.csv", path=".")
+
+df = pd.read_csv("global_disaster_response_2018_2024.csv")
+
+# Streamlit App Configuration
 st.set_page_config(
     page_title="Disaster Dashboard",
     layout="wide",   # ini penting
