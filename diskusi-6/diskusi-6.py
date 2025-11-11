@@ -12,9 +12,17 @@ api = KaggleApi()
 api.authenticate()
 
 dataset = "emirhanakku/disaster-and-emergency-response-dataset-20182024"
-api.dataset_download_file(dataset, "global_disaster_response_2018_2024.csv", path=".")
+api.dataset_download_file(dataset, "global_disaster_response_2018_2024.csv", path="./diskusi-6")
 
-df = pd.read_csv("global_disaster_response_2018_2024.csv")
+def load_data(path):
+    df = pd.read_csv(path)
+    # Convert 'date' ke datetime dan ambil tahun
+    df['date'] = pd.to_datetime(df['date'], errors='coerce')
+    df['year'] = df['date'].dt.year
+    return df
+
+DATA_PATH = "diskusi-6/global_disaster_response_2018_2024.csv"
+df = load_data(DATA_PATH)
 
 # Streamlit App Configuration
 st.set_page_config(
